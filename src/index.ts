@@ -1,3 +1,5 @@
+import "array.prototype.flat";
+
 export * from "./lib/async";
 export * from "./lib/number";
 
