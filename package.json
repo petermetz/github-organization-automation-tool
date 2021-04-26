@@ -6,7 +6,7 @@
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
   "bin": {
-    "github-organization-automation-tool": "./build/main/index.js"
+    "github-organization-automation-tool": "./bin/github-organization-automation-tool"
   },
   "repository": "https://github.com/petermetz/github-organization-automation-tool",
   "license": "Apache-2.0",
