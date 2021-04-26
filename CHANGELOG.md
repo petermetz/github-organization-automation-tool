@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0-rc.3](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.2...v1.1.0-rc.3) (2021-04-26)
+
+
+### Bug Fixes
+
+* **cli:** include bin directory in npm publish ([2b87373](https://github.com/petermetz/github-organization-automation-tool/commit/2b873732d77a1ac41239c3fbfc92a448ec19333d))
+
 ## [1.1.0-rc.2](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.1...v1.1.0-rc.2) (2021-04-26)
 
 
