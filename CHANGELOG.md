@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0-rc.1](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.0...v1.1.0-rc.1) (2021-04-26)
+
+
+### Bug Fixes
+
+* **package-json:** package binary location ([6acee69](https://github.com/petermetz/github-organization-automation-tool/commit/6acee6923fd27c56c1ff6db7235209bae095c31a))
+
 ## 1.1.0-rc.0 (2021-04-26)
 
 
