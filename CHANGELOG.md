@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0-rc.6](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.5...v1.1.0-rc.6) (2021-04-26)
+
+
+### Bug Fixes
+
+* **package-json:** corrected minimum node version to 12 ([3dd3491](https://github.com/petermetz/github-organization-automation-tool/commit/3dd349142d71c9f5d0114d99e9c473a29c53d26f))
+
 ## [1.1.0-rc.5](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.4...v1.1.0-rc.5) (2021-04-26)
 
 
