@@ -5,8 +5,8 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "bin": { 
-    "./build/main/index.js": "github-organization-automation-tool" 
+  "bin": {
+    "./build/main/index.js": "github-organization-automation-tool"
   },
   "repository": "https://github.com/petermetz/github-organization-automation-tool",
   "license": "Apache-2.0",
@@ -37,7 +37,8 @@
     "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
     "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
     "doc:publish": "gh-pages -m \"[ci skip] Updates\" -d build/docs",
-    "version": "standard-version",
+    "version": "standard-version --message=\"chore(release): v%s\"",
+    "version-release-candidate": "standard-version --message=\"chore(release): v%s\" --commit-all --prerelease rc",
     "reset-hard": "git clean -dfx && git reset --hard && npm i",
     "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish"
   },
