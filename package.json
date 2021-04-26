@@ -81,6 +81,7 @@
     "typescript": "4.2.4"
   },
   "files": [
+    "bin/",
     "build/main",
     "build/module",
     "!**/*.spec.*",
