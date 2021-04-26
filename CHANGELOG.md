@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0-rc.5](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.4...v1.1.0-rc.5) (2021-04-26)
+
+
+### Bug Fixes
+
+* **build:** support NodeJS 12 ([6c53a87](https://github.com/petermetz/github-organization-automation-tool/commit/6c53a87a66f20eebc8edf7ced7e60ab3561d465b))
+
 ## [1.1.0-rc.4](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.3...v1.1.0-rc.4) (2021-04-26)
 
 
