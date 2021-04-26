@@ -5,6 +5,9 @@
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
+  "bin": { 
+    "./build/main/index.js": "github-organization-automation-tool" 
+  },
   "repository": "https://github.com/petermetz/github-organization-automation-tool",
   "license": "Apache-2.0",
   "keywords": [],
@@ -42,11 +45,19 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@bitauth/libauth": "1.18.1"
+    "@bitauth/libauth": "1.18.1",
+    "@octokit/graphql": "4.6.1",
+    "figlet": "1.5.0",
+    "js-yaml": "4.1.0",
+    "loglevel": "1.7.1",
+    "loglevel-plugin-prefix": "0.8.4"
   },
   "devDependencies": {
     "@ava/typescript": "1.1.1",
     "@istanbuljs/nyc-config-typescript": "1.0.1",
+    "@types/figlet": "1.5.1",
+    "@types/js-yaml": "4.0.1",
+    "@types/node": "14.14.41",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.22.0",
     "ava": "3.15.0",
@@ -95,7 +106,7 @@
     }
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": false
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",

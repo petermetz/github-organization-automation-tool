@@ -1,31 +1,33 @@
 {
-  "version": "0.1",
-  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
-  "language": "en",
-  "words": [
-    "codecov",
-    "commitlint",
-    "dependabot",
-    "editorconfig",
-    "esnext",
-    "execa",
-    "exponentiate",
-    "globby",
-    "libauth",
-    "mkdir",
-    "prettierignore",
-    "sandboxed",
-    "transpiled",
-    "typedoc",
-    "untracked"
-  ],
-  "flagWords": [],
-  "ignorePaths": [
-    ".vscode/extensions.json",
-    "package.json",
-    "package-lock.json",
-    "yarn.lock",
-    "tsconfig.json",
-    "node_modules/**"
-  ]
+    "version": "0.1",
+    "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/master/cspell.schema.json",
+    "language": "en",
+    "words": [
+        "codecov",
+        "commitlint",
+        "dependabot",
+        "editorconfig",
+        "esnext",
+        "execa",
+        "exponentiate",
+        "globby",
+        "libauth",
+        "loglevel",
+        "mkdir",
+        "octokit",
+        "prettierignore",
+        "sandboxed",
+        "transpiled",
+        "typedoc",
+        "untracked"
+    ],
+    "flagWords": [],
+    "ignorePaths": [
+        ".vscode/extensions.json",
+        "package.json",
+        "package-lock.json",
+        "yarn.lock",
+        "tsconfig.json",
+        "node_modules/**"
+    ]
 }

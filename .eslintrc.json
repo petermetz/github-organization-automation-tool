@@ -22,10 +22,13 @@
       { "allowWholeFile": true }
     ],
     "eslint-comments/no-unused-disable": "error",
+    "functional/no-try-statement": "off",
+    "functional/no-throw-statement": "off",
     "import/order": [
       "error",
       { "newlines-between": "always", "alphabetize": { "order": "asc" } }
     ],
+    "indent": ["error", 2],
     "sort-imports": [
       "error",
       { "ignoreDeclarationSort": true, "ignoreCase": true }
