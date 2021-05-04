@@ -1,0 +1,13 @@
+.github/
+.vscode/
+./build/
+./node_modules/
+.cspell.json
+.dockerignore
+.editorconfig
+.eslintrc.json
+.gitignore
+.prettierignore
+CHANGELOG.md
+Dockerfile
+README.md

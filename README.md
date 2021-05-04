@@ -4,8 +4,17 @@ GOAT is a tool to automate tedious manual tasks related to organization manageme
 
 ## Usage
 
+
+### npm
+
   ```sh
   npm i -g github-organization-automation-tool
+  ```
+
+### Docker
+
+  ```sh
+    
   ```
 
 ### Sync Group Memberships from OWNERS.yaml to GitHub Organization 
@@ -16,4 +25,10 @@ The `OWNERS.yaml` file will be located on the branch `main`.
 If you omit the last two arguments these will be the defaulted values as well.
   ```sh
   GITHUB_TOKEN=$YOUR_TOKEN npx github-organization-automation-tool sync-owners your-organization-name your-repository-name main OWNERS.yaml
+  ```
+
+### Building Container Image Locally
+
+  ```sh
+  DOCKER_BUILDKIT=1 docker build -f ./Dockerfile . -t goat
   ```
