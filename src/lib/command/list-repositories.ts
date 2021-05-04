@@ -21,10 +21,10 @@ query ($orgName: String!) {
 
 export async function listRepositories(
   ctx: IExecutionContext,
-  cmdArgs: readonly string[],
+  cmdArgs: readonly string[]
 ): Promise<ReadonlyArray<IGithubRepository>> {
   const [orgName] = cmdArgs;
   const gql = GQL_LIST_REPOSITORIES_BY_ORG_NAME;
   const params = { orgName };
-  return runQuery<any>(ctx, gql, params);
+  return runQuery<never>(ctx, gql, params);
 }

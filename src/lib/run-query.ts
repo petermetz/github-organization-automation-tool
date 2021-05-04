@@ -6,9 +6,8 @@ import { IExecutionContext } from "./i-execution-context";
 export async function runQuery<T>(
   ctx: IExecutionContext,
   query: string,
-  params: Record<string, string | number>,
+  params: Record<string, string | number>
 ): Promise<GraphQlResponse<T>> {
-  
   if (params.headers) {
     throw new Error(`GraphQl query param "headers" is reserved.`);
   }

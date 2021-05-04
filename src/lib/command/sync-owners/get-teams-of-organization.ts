@@ -101,11 +101,15 @@ export async function getTeamsOfOrganization(
   ctx: IExecutionContext,
   organizationName: string
 ): Promise<readonly ITeamNodeEntity[]> {
-  const { organization } = await runQuery<IOrganizationTeamInfo>(ctx, GQL_GET_TEAMS_OF_ORGANIZATION, { organizationName });
+  const { organization } = await runQuery<IOrganizationTeamInfo>(
+    ctx,
+    GQL_GET_TEAMS_OF_ORGANIZATION,
+    { organizationName }
+  );
   const log = ctx.createLogger("getTeamsOfOrganization", ctx);
   log.debug(`Teams in org response: `, organization);
   if (Array.isArray(organization?.teams?.nodes)) {
-    return organization.teams.nodes
+    return organization.teams.nodes;
   } else {
     return [];
   }
@@ -118,7 +122,7 @@ export type Organization = {
   readonly teams: Teams;
 };
 export type Teams = {
-  readonly nodes?: readonly (ITeamNodeEntity)[] | null;
+  readonly nodes?: readonly ITeamNodeEntity[] | null;
 };
 export type ITeamNodeEntity = {
   readonly name: string;

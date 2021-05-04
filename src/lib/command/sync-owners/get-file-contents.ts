@@ -5,7 +5,7 @@ import { runQuery } from "../../run-query";
  * Example parameters:
  * ```json
  * {
- *   "organizationName": "hyperledger-cicd",
+ *   "organizationName": "hyperledger",
  *   "repositoryName": "besu",
  *   "branchColonFilePath": "main:README.md"
  * }

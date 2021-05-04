@@ -7,25 +7,30 @@ import { PROJECT_NAME_LONG, PROJECT_NAME_SHORT } from "./constants";
 import { IExecutionContext } from "./i-execution-context";
 import { loglevelLoggerFactory } from "./logging/loglevel/loglevel-logger-factory";
 
-export async function main(args: readonly string[], env: NodeJS.ProcessEnv = {}): Promise<void> {
+export async function main(
+  args: readonly string[],
+  env: NodeJS.ProcessEnv = {}
+): Promise<void> {
   try {
     const greeting = await renderCliAppGreeting(PROJECT_NAME_SHORT);
     console.log(greeting);
     console.log(PROJECT_NAME_LONG);
     console.log();
-  
+
     if (!env.GITHUB_TOKEN) {
-      console.error(`ERROR: GITHUB_TOKEN environment variable needs to be set.`);
+      console.error(
+        `ERROR: GITHUB_TOKEN environment variable needs to be set.`
+      );
       process.exit(222);
     }
-  
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_executable, _sourceFile, commandName, ...cmdArgs] = args;
     const ctx: IExecutionContext = {
       accessToken: env.GITHUB_TOKEN,
       createLogger: loglevelLoggerFactory,
-    }
-  
+    };
+
     const commandResponse = await invokeCommand(commandName, cmdArgs, ctx);
     console.log(JSON.stringify(commandResponse, null, 4));
   } catch (ex) {
@@ -34,7 +39,11 @@ export async function main(args: readonly string[], env: NodeJS.ProcessEnv = {})
   }
 }
 
-const invokeCommand = async(cmdName: string, cmdArgs: readonly string[], ctx: IExecutionContext): Promise<unknown> => {
+const invokeCommand = async (
+  cmdName: string,
+  cmdArgs: readonly string[],
+  ctx: IExecutionContext
+): Promise<unknown> => {
   if (cmdName === "list") {
     return listRepositories(ctx, cmdArgs);
   } else if (cmdName === "sync-owners") {
@@ -42,7 +51,7 @@ const invokeCommand = async(cmdName: string, cmdArgs: readonly string[], ctx: IE
   } else {
     return renderCliHelpText();
   }
-}
+};
 
 const renderCliAppGreeting = (message: string): Promise<string> => {
   const fnTag = `renderCliAppGreeting()`;
