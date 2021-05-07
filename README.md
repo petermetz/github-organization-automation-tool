@@ -14,7 +14,15 @@ GOAT is a tool to automate tedious manual tasks related to organization manageme
 ### Docker
 
   ```sh
-    
+  docker run \
+    --rm \
+    --env GITHUB_TOKEN=$YOUR_TOKEN \
+    petermetz/github-organization-automation-tool:main \
+    sync-owners \
+    hyperledger-cicd \
+    besu \
+    main \
+    OWNERS.yaml
   ```
 
 ### Sync Group Memberships from OWNERS.yaml to GitHub Organization 
