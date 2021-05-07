@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0-rc.7](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.6...v1.1.0-rc.7) (2021-05-07)
+
+
+### Bug Fixes
+
+* **dockerignore:** do not ignore linter configuration files ([7f3fe23](https://github.com/petermetz/github-organization-automation-tool/commit/7f3fe23d9f1891add8d0d4d8433714298aa17ee7))
+
 ## [1.1.0-rc.6](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.5...v1.1.0-rc.6) (2021-04-26)
 
 
