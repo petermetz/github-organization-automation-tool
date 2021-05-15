@@ -1,70 +1,114 @@
-import figlet from "figlet";
+import { LoggerConfiguration } from "slf4ts-api";
+import { hideBin } from "yargs/helpers";
+import yargs from "yargs/yargs";
 
 import { listRepositories } from "./command/list-repositories";
-import { renderCliHelpText } from "./command/render-cli-help-text";
 import { syncOwners } from "./command/sync-owners/sync-owners";
-import { PROJECT_NAME_LONG, PROJECT_NAME_SHORT } from "./constants";
 import { IExecutionContext } from "./i-execution-context";
-import { loglevelLoggerFactory } from "./logging/loglevel/loglevel-logger-factory";
+import { mapToSlf4TsLogLevel, slf4tsLoggerFactory } from "./logging/slf4ts/slf4ts-logger-factory";
 
 export async function main(
-  args: readonly string[],
-  env: NodeJS.ProcessEnv = {}
+  // eslint-disable-next-line functional/prefer-readonly-type
+  args: string[],
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _env: NodeJS.ProcessEnv = {}
 ): Promise<void> {
-  try {
-    const greeting = await renderCliAppGreeting(PROJECT_NAME_SHORT);
-    console.log(greeting);
-    console.log(PROJECT_NAME_LONG);
-    console.log();
-
-    if (!env.GITHUB_TOKEN) {
-      console.error(
-        `ERROR: GITHUB_TOKEN environment variable needs to be set.`
-      );
-      process.exit(222);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_executable, _sourceFile, commandName, ...cmdArgs] = args;
-    const ctx: IExecutionContext = {
-      accessToken: env.GITHUB_TOKEN,
-      createLogger: loglevelLoggerFactory,
-    };
-
-    const commandResponse = await invokeCommand(commandName, cmdArgs, ctx);
-    console.log(JSON.stringify(commandResponse, null, 4));
-  } catch (ex) {
-    console.error(`Crashed with unknown exception:`, ex);
-    process.exit(111);
-  }
+  yargs(hideBin(args))
+    .env("")
+    .wrap(180)
+    .option("github-token", {
+      alias: "t",
+      demandOption: true,
+      type: "string",
+      description: "The GitHub token to use for the API calls.",
+    })
+    .option("log-level", {
+      alias: "l",
+      choices: ["TRACE", "DEBUG", "INFO", "WARN", "ERROR"],
+      type: "string",
+      description:
+        "The log level to use when logging. Ignored when quiet is specified.",
+    })
+    .option("verbose", {
+      alias: "v",
+      type: "count",
+      description:
+        "Run with verbose logging. Ignored if --quiet or --log-level is specified. Once: DEBUG, Twice: TRACE",
+    })
+    .option("quiet", {
+      alias: "q",
+      type: "boolean",
+      description: "Only output errors or the final command result if any.",
+    })
+    .command(
+      "list-repo [organizationName]",
+      "Lists the git repositories within an organization",
+      (yargs) => {
+        return yargs.positional("organizationName", {
+          describe: "The name of the GitHub organization",
+          type: "string",
+          demandOption: true,
+          alias: "o",
+        });
+      },
+      async (argv) => {
+        const ctx = await initExecutionContext(argv);
+        const commandResponse = await listRepositories(ctx, { ...argv });
+        return { ctx, commandResponse };
+      }
+    )
+    .command(
+      "sync-owners [organizationName]",
+      "Syncs the OWNERS.yaml file of a git repository to the organization.",
+      (yargs) => {
+        return yargs
+          .positional("organizationName", {
+            describe: "The name of the GitHub organization",
+            type: "string",
+            demandOption: true,
+            alias: "o",
+          })
+          .positional("repositoryName", {
+            describe: "The name of the GitHub git repository",
+            type: "string",
+            demandOption: true,
+            alias: "o",
+          });
+      },
+      async (argv) => {
+        const ctx = await initExecutionContext(argv);
+        const commandResponse = await syncOwners(ctx, { ...argv });
+        return { ctx, commandResponse };
+      }
+    )
+    .onFinishCommand(
+      async (result: { readonly ctx: IExecutionContext; readonly commandResponse: unknown }) => {
+        const { commandResponse } = result;
+        console.log(JSON.stringify(commandResponse, null, 4));
+      }
+    ).argv;
 }
 
-const invokeCommand = async (
-  cmdName: string,
-  cmdArgs: readonly string[],
-  ctx: IExecutionContext
-): Promise<unknown> => {
-  if (cmdName === "list") {
-    return listRepositories(ctx, cmdArgs);
-  } else if (cmdName === "sync-owners") {
-    return syncOwners(ctx, cmdArgs);
-  } else {
-    return renderCliHelpText();
-  }
+export type IGlobalYargsOptions = {
+  readonly "github-token": string;
+  readonly "log-level": string | undefined;
+  readonly verbose: number;
+  readonly quiet: boolean | undefined;
+  readonly _: readonly (string | number)[];
+  readonly $0: string;
 };
 
-const renderCliAppGreeting = (message: string): Promise<string> => {
-  const fnTag = `renderCliAppGreeting()`;
-  return new Promise((resolve, reject) => {
-    figlet(message, (ex: Error | null, result?: string) => {
-      if (ex) {
-        console.error(`${fnTag} Figlet error: `, ex);
-        reject(ex);
-      } else if (result) {
-        resolve(result);
-      } else {
-        reject(new Error(`${fnTag} Figlet: falsy result, no error`));
-      }
-    });
-  });
+const initExecutionContext = async (
+  argv: IGlobalYargsOptions
+): Promise<IExecutionContext> => {
+  const logLevel = mapToSlf4TsLogLevel(argv);
+  LoggerConfiguration.setDefaultLogLevel(logLevel);
+
+  const rootLogger = slf4tsLoggerFactory("main", argv);
+  const ctx: IExecutionContext = {
+    accessToken: argv["github-token"],
+    argv,
+    rootLogger,
+  };
+  return ctx;
 };

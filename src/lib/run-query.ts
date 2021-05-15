@@ -1,7 +1,8 @@
 import { graphql } from "@octokit/graphql";
-import { GraphQlResponse } from "@octokit/graphql/dist-types/types";
+import type { GraphQlResponse } from "@octokit/graphql/dist-types/types";
 
-import { IExecutionContext } from "./i-execution-context";
+import type { IExecutionContext } from "./i-execution-context";
+import { slf4tsLoggerFactory } from "./logging/slf4ts/slf4ts-logger-factory";
 
 export async function runQuery<T>(
   ctx: IExecutionContext,
@@ -15,8 +16,8 @@ export async function runQuery<T>(
     throw new Error(`GraphQl query param "query" is reserved.`);
   }
 
-  const log = await ctx.createLogger("runQuery", ctx);
-  log.debug("Running GraphQL query:\n%o", query);
+  const log = await slf4tsLoggerFactory("runQuery", ctx.argv);
+  log.debug("Running GraphQL query: ", query);
 
   return graphql({
     query,

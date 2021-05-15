@@ -1,6 +1,7 @@
 import yaml from "js-yaml";
 
 import { IExecutionContext } from "../../i-execution-context";
+import { slf4tsLoggerFactory } from "../../logging/slf4ts/slf4ts-logger-factory";
 
 import { getFileContents } from "./get-file-contents";
 import {
@@ -15,6 +16,13 @@ import {
   ITeamMemberRemoval,
 } from "./model/i-repository-owners-diff";
 
+export type ISyncOwnersRequest = {
+  readonly organizationName: string;
+  readonly repositoryName: string;
+  readonly file?: string;
+  readonly branch?: string;
+};
+
 /**
  * FIXME this will not work if there's more than a 100 teams in the GitHub org
  * because for that we need to handle pagination, which is something that we
@@ -25,16 +33,15 @@ import {
  */
 export async function syncOwners(
   ctx: IExecutionContext,
-  cmdArgs: readonly string[]
+  req: ISyncOwnersRequest,
 ): Promise<unknown> {
-  const [organizationName, repositoryName, branchMaybe, fileMaybe] = cmdArgs;
-  const branch = branchMaybe || "main";
-  const file = fileMaybe || "OWNERS.yaml";
+  const branch = req.branch || "main";
+  const file = req.file || "OWNERS.yaml";
 
-  const log = ctx.createLogger("syncOwners", ctx);
+  const log = slf4tsLoggerFactory("syncOwners", ctx.argv);
   const request = {
-    organizationName,
-    repositoryName,
+    organizationName: req.organizationName,
+    repositoryName: req.repositoryName,
     file,
     branch,
   };
@@ -45,7 +52,7 @@ export async function syncOwners(
   const repositoryOwners = yaml.load(ownersYamlContents) as IRepositoryOwners;
   log.debug(`owners YAML parsed: `, repositoryOwners);
 
-  const teamsInOrg = await getTeamsOfOrganization(ctx, organizationName);
+  const teamsInOrg = await getTeamsOfOrganization(ctx, req.organizationName);
 
   return determineDifferences(ctx, repositoryOwners, teamsInOrg);
 }
@@ -55,7 +62,7 @@ async function determineDifferences(
   repositoryOwners: IRepositoryOwners,
   teamsInOrg: readonly ITeamNodeEntity[]
 ): Promise<IRepositoryOwnersDiff> {
-  const log = ctx.createLogger("determineDifferences", ctx);
+  const log = slf4tsLoggerFactory("determineDifferences", ctx.argv);
 
   log.debug(`repositoryOwners: `, repositoryOwners);
   log.debug(`existingTeams: `, JSON.stringify(teamsInOrg, null, 4));

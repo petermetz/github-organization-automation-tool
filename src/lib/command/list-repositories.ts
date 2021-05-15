@@ -19,12 +19,15 @@ query ($orgName: String!) {
 }
 `;
 
+export type IListRepositoriesRequest = {
+  readonly organizationName: string;
+};
+
 export async function listRepositories(
   ctx: IExecutionContext,
-  cmdArgs: readonly string[]
+  req: IListRepositoriesRequest,
 ): Promise<ReadonlyArray<IGithubRepository>> {
-  const [orgName] = cmdArgs;
   const gql = GQL_LIST_REPOSITORIES_BY_ORG_NAME;
-  const params = { orgName };
+  const params = { orgName: req.organizationName };
   return runQuery<never>(ctx, gql, params);
 }

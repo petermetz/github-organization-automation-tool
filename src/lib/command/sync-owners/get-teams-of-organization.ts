@@ -1,4 +1,5 @@
 import { IExecutionContext } from "../../i-execution-context";
+import { slf4tsLoggerFactory } from "../../logging/slf4ts/slf4ts-logger-factory";
 import { runQuery } from "../../run-query";
 
 /**
@@ -106,7 +107,7 @@ export async function getTeamsOfOrganization(
     GQL_GET_TEAMS_OF_ORGANIZATION,
     { organizationName }
   );
-  const log = ctx.createLogger("getTeamsOfOrganization", ctx);
+  const log = slf4tsLoggerFactory("getTeamsOfOrganization", ctx.argv);
   log.debug(`Teams in org response: `, organization);
   if (Array.isArray(organization?.teams?.nodes)) {
     return organization.teams.nodes;
