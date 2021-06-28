@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0-rc.8](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.7...v1.1.0-rc.8) (2021-06-28)
+
+
+### Features
+
+* **sync-owners:** enforce repo name prefix on all team names. ([c18f2c4](https://github.com/petermetz/github-organization-automation-tool/commit/c18f2c44c6c2558a90f8f05238a3561c5959465d))
+* **sync-owners:** team member addition ([3df88b9](https://github.com/petermetz/github-organization-automation-tool/commit/3df88b9214beabd005ec466f316a3a7cbec1efc9))
+
+
+### Bug Fixes
+
+* **dockerfile:** user creation was out of order ([2f8489f](https://github.com/petermetz/github-organization-automation-tool/commit/2f8489fcaabfc430fcf9569dbbbdcbabdef976ef))
+* **logging:** pulled in slf4ts ([5027f07](https://github.com/petermetz/github-organization-automation-tool/commit/5027f07a586d387641226ee172535b1b12e03051))
+
 ## [1.1.0-rc.7](https://github.com/petermetz/github-organization-automation-tool/compare/v1.1.0-rc.6...v1.1.0-rc.7) (2021-05-07)
 
 
