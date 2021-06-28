@@ -5,21 +5,17 @@ import {
   LogLevel,
 } from "slf4ts-api";
 
-import {
-  NPM_PACKAGE_VERSION,
-  PROJECT_NAME_SHORT,
-} from "../../constants";
+import { NPM_PACKAGE_VERSION, PROJECT_NAME_SHORT } from "../../constants";
 import type { IGlobalYargsOptions } from "../../main";
 
 export function slf4tsLoggerFactory(
   label: string,
   argv: IGlobalYargsOptions
 ): ILoggerInstance<unknown> {
-
   const logLevel = mapToSlf4TsLogLevel(argv);
 
   const logger = LoggerFactory.getLogger(PROJECT_NAME_SHORT, label);
-  
+
   LoggerConfiguration.setLogLevel(logLevel);
 
   logger.setMetadata({

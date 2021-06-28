@@ -25,7 +25,7 @@ export type IListRepositoriesRequest = {
 
 export async function listRepositories(
   ctx: IExecutionContext,
-  req: IListRepositoriesRequest,
+  req: IListRepositoriesRequest
 ): Promise<ReadonlyArray<IGithubRepository>> {
   const gql = GQL_LIST_REPOSITORIES_BY_ORG_NAME;
   const params = { orgName: req.organizationName };

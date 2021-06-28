@@ -5,7 +5,10 @@ import yargs from "yargs/yargs";
 import { listRepositories } from "./command/list-repositories";
 import { syncOwners } from "./command/sync-owners/sync-owners";
 import { IExecutionContext } from "./i-execution-context";
-import { mapToSlf4TsLogLevel, slf4tsLoggerFactory } from "./logging/slf4ts/slf4ts-logger-factory";
+import {
+  mapToSlf4TsLogLevel,
+  slf4tsLoggerFactory,
+} from "./logging/slf4ts/slf4ts-logger-factory";
 
 export async function main(
   // eslint-disable-next-line functional/prefer-readonly-type
@@ -82,7 +85,10 @@ export async function main(
       }
     )
     .onFinishCommand(
-      async (result: { readonly ctx: IExecutionContext; readonly commandResponse: unknown }) => {
+      async (result: {
+        readonly ctx: IExecutionContext;
+        readonly commandResponse: unknown;
+      }) => {
         const { commandResponse } = result;
         console.log(JSON.stringify(commandResponse, null, 4));
       }

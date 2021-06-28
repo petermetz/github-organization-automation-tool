@@ -33,7 +33,7 @@ export type ISyncOwnersRequest = {
  */
 export async function syncOwners(
   ctx: IExecutionContext,
-  req: ISyncOwnersRequest,
+  req: ISyncOwnersRequest
 ): Promise<unknown> {
   const branch = req.branch || "main";
   const file = req.file || "OWNERS.yaml";
