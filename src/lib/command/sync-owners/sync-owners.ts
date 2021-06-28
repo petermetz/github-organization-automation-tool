@@ -55,9 +55,14 @@ export async function syncOwners(
   const ownersYamlRaw = yaml.load(ownersYamlContents) as IRepositoryOwners;
   log.debug(`owners YAML raw: `, ownersYamlRaw);
 
-  const validationResult =  await validateOwnersYaml({ repositoryName: req.repositoryName, repositoryOwners: ownersYamlRaw });
+  const validationResult = await validateOwnersYaml({
+    repositoryName: req.repositoryName,
+    repositoryOwners: ownersYamlRaw,
+  });
   if (!validationResult.isValid) {
-    throw new Error(`OWNERS.yaml is invalid: \n${validationResult.errors.join("\n")}`);
+    throw new Error(
+      `OWNERS.yaml is invalid: \n${validationResult.errors.join("\n")}`
+    );
   }
 
   const repositoryOwners: IRepositoryOwners = {
