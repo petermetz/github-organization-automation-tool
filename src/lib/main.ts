@@ -44,7 +44,7 @@ export async function main(
       description: "Only output errors or the final command result if any.",
     })
     .command(
-      "list-repo [organizationName]",
+      "list-repo <organizationName>",
       "Lists the git repositories within an organization",
       (yargs) => {
         return yargs.positional("organizationName", {
@@ -61,7 +61,7 @@ export async function main(
       }
     )
     .command(
-      "sync-owners [organizationName]",
+      "sync-owners <organizationName> <repositoryName> [branch] [file]",
       "Syncs the OWNERS.yaml file of a git repository to the organization.",
       (yargs) => {
         return yargs
@@ -75,7 +75,19 @@ export async function main(
             describe: "The name of the GitHub git repository",
             type: "string",
             demandOption: true,
-            alias: "o",
+            alias: "r",
+          })
+          .positional("branch", {
+            describe: "The name of the git branch to work on.",
+            type: "string",
+            default: "main",
+            alias: "b",
+          })
+          .positional("file", {
+            describe: "The name of the file to parse for ownership data.",
+            default: "OWNERS.yaml",
+            type: "string",
+            alias: "f",
           });
       },
       async (argv) => {

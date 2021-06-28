@@ -3,6 +3,8 @@ import yaml from "js-yaml";
 import { IExecutionContext } from "../../i-execution-context";
 import { slf4tsLoggerFactory } from "../../logging/slf4ts/slf4ts-logger-factory";
 
+import { addTeamMember } from "./add-team-member";
+import { createTeam } from "./create-team";
 import { getFileContents } from "./get-file-contents";
 import {
   getTeamsOfOrganization,
@@ -49,12 +51,57 @@ export async function syncOwners(
   const ownersYamlContents = await getFileContents(ctx, request);
   log.debug(`owners YAML contents: `, ownersYamlContents);
 
-  const repositoryOwners = yaml.load(ownersYamlContents) as IRepositoryOwners;
-  log.debug(`owners YAML parsed: `, repositoryOwners);
+  const ownersYamlRaw = yaml.load(ownersYamlContents) as IRepositoryOwners;
+  log.debug(`owners YAML raw: `, ownersYamlRaw);
+  const repositoryOwners: IRepositoryOwners = {
+    ...ownersYamlRaw,
+    teams: ownersYamlRaw.teams.map((aTeam) => ({
+      ...aTeam,
+      members: aTeam.members || [],
+    })),
+  };
+  log.debug(`owners YAML post-processed: `, repositoryOwners);
 
   const teamsInOrg = await getTeamsOfOrganization(ctx, req.organizationName);
 
-  return determineDifferences(ctx, repositoryOwners, teamsInOrg);
+  const diff = await determineDifferences(ctx, repositoryOwners, teamsInOrg);
+
+  const teamsCreated = diff.teamsAdded.map(async (aTeamName) => {
+    const team = repositoryOwners.teams.find((it) => it.name === aTeamName);
+    if (!team) {
+      throw new Error(`Added team not found in OWNERS.yaml: ${aTeamName}`);
+    }
+    const createTeamRequest = {
+      org: req.organizationName,
+      name: team.name,
+      members: team.members,
+      description: team.description,
+      privacy: "closed",
+      repo_names: [`${req.organizationName}/${req.repositoryName}`],
+    };
+    const createTeamResponse = await createTeam(ctx, createTeamRequest);
+
+    return { createTeamResponse };
+  });
+  const teamCreationResponses = await Promise.all(teamsCreated);
+  log.debug("Created {} teams successfully.", teamCreationResponses.length);
+
+  const teamMembersAdded = await diff.membersAdditions.map(async (it) =>
+    addTeamMember(ctx, {
+      org: req.organizationName,
+      name: it.teamName,
+      members: [it.memberName],
+    })
+  );
+  const teamMemberAdditionResponses = await Promise.all(teamMembersAdded);
+
+  return {
+    diff,
+    responses: {
+      teamCreation: teamCreationResponses,
+      teamMemberAddition: teamMemberAdditionResponses,
+    },
+  };
 }
 
 async function determineDifferences(

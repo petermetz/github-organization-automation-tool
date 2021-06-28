@@ -53,6 +53,7 @@
   "dependencies": {
     "@bitauth/libauth": "1.18.1",
     "@octokit/graphql": "4.6.1",
+    "@octokit/rest": "18.5.3",
     "array.prototype.flat": "1.2.4",
     "figlet": "1.5.0",
     "js-yaml": "4.1.0",
