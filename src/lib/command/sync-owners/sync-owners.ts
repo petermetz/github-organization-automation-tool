@@ -2,6 +2,7 @@ import yaml from "js-yaml";
 
 import { IExecutionContext } from "../../i-execution-context";
 import { slf4tsLoggerFactory } from "../../logging/slf4ts/slf4ts-logger-factory";
+import { validateOwnersYaml } from "../../validate-owners-yaml";
 
 import { addTeamMember } from "./add-team-member";
 import { createTeam } from "./create-team";
@@ -53,6 +54,12 @@ export async function syncOwners(
 
   const ownersYamlRaw = yaml.load(ownersYamlContents) as IRepositoryOwners;
   log.debug(`owners YAML raw: `, ownersYamlRaw);
+
+  const validationResult =  await validateOwnersYaml({ repositoryName: req.repositoryName, repositoryOwners: ownersYamlRaw });
+  if (!validationResult.isValid) {
+    throw new Error(`OWNERS.yaml is invalid: \n${validationResult.errors.join("\n")}`);
+  }
+
   const repositoryOwners: IRepositoryOwners = {
     ...ownersYamlRaw,
     teams: ownersYamlRaw.teams.map((aTeam) => ({
