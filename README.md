@@ -40,3 +40,22 @@ If you omit the last two arguments these will be the defaulted values as well.
   ```sh
   DOCKER_BUILDKIT=1 docker build -f ./Dockerfile . -t goat
   ```
+
+### Testing the CLI Locally
+
+Terminal #1
+
+```sh
+npm run watch:build
+```
+
+Terminal #2
+```sh
+GITHUB_TOKEN=$YOUR_TOKEN \
+./bin/github-organization-automation-tool \
+   sync-owners \
+   hyperledger-cicd \
+   besu \
+   main \
+   OWNERS.yaml
+```
