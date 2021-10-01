@@ -38,6 +38,11 @@ export async function main(
       description:
         "Run with verbose logging. Ignored if --quiet or --log-level is specified. Once: DEBUG, Twice: TRACE",
     })
+    .option("dry-run", {
+      alias: "d",
+      type: "boolean",
+      description: "Does not perform any writes to the state on GitHub, just calculates the list of tasks that otherwise would be done.",
+    })
     .option("quiet", {
       alias: "q",
       type: "boolean",
@@ -112,6 +117,7 @@ export type IGlobalYargsOptions = {
   readonly "log-level": string | undefined;
   readonly verbose: number;
   readonly quiet: boolean | undefined;
+  readonly "dry-run": boolean | undefined;
   readonly _: readonly (string | number)[];
   readonly $0: string;
 };
@@ -121,11 +127,13 @@ const initExecutionContext = async (
 ): Promise<IExecutionContext> => {
   const logLevel = mapToSlf4TsLogLevel(argv);
   LoggerConfiguration.setDefaultLogLevel(logLevel);
+  const dryRun = argv["dry-run"] === true;
 
   const rootLogger = slf4tsLoggerFactory("main", argv);
   const ctx: IExecutionContext = {
     accessToken: argv["github-token"],
     argv,
+    dryRun,
     rootLogger,
   };
   return ctx;

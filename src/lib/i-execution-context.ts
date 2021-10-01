@@ -6,4 +6,5 @@ export type IExecutionContext = {
   readonly argv: IGlobalYargsOptions;
   readonly rootLogger: ILoggerInstance<unknown>;
   readonly accessToken: string;
+  readonly dryRun: boolean;
 };
